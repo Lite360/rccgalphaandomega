@@ -1,8 +1,8 @@
 import { db, schema } from '../../db';
 import { eq, desc, and, sql, inArray } from 'drizzle-orm';
-import { validateSession, generateId } from '../security/auth';
+import { validateSession } from '../security/auth';
 import { logAdminAction } from '../services/auditService';
-import { createQuestionSchema, createExamSchema, createParishSchema, manualGradeSchema } from '../validators';
+import { createQuestionSchema, createExamSchema, createParishSchema } from '../validators';
 import type { ServerRequest, ServerResponse } from './routes';
 import { getSessionToken } from './routes';
 
@@ -73,21 +73,21 @@ export async function handleAdminApiRoute(req: ServerRequest, pathname: string, 
     });
 
     // Attach question counts
-    const examIds = exams.map(e => e.id);
+    const examIds = exams.map((e: any) => e.id);
     let questionCounts: Record<string, number> = {};
     if (examIds.length > 0) {
       const counts = await db.select({ examId: schema.examQuestions.examId, count: sql<number>`count(*)` })
         .from(schema.examQuestions)
         .where(inArray(schema.examQuestions.examId, examIds))
         .groupBy(schema.examQuestions.examId);
-      counts.forEach(c => { questionCounts[c.examId] = Number(c.count); });
+      counts.forEach((c: any) => { questionCounts[c.examId] = Number(c.count); });
     }
 
     return {
       statusCode: 200,
       body: {
         success: true,
-        exams: exams.map(e => ({ ...e, questionCount: questionCounts[e.id] || 0 })),
+        exams: exams.map((e: any) => ({ ...e, questionCount: questionCounts[e.id] || 0 })),
       },
     };
   }
@@ -161,7 +161,7 @@ export async function handleAdminApiRoute(req: ServerRequest, pathname: string, 
     const examId = endExamMatch[1];
     const now = new Date();
 
-    await db.transaction(async (tx) => {
+    await db.transaction(async (tx: any) => {
       // End the exam
       await tx.update(schema.exams)
         .set({ status: 'ended', endedAt: now, updatedAt: now })
@@ -199,7 +199,7 @@ export async function handleAdminApiRoute(req: ServerRequest, pathname: string, 
       statusCode: 200,
       body: {
         success: true,
-        attempts: attempts.map(a => ({
+        attempts: attempts.map((a: any) => ({
           ...a,
           userName: a.user?.fullName || 'Unknown',
           parishName: (a.user as any)?.parish?.name || '—',
@@ -226,7 +226,7 @@ export async function handleAdminApiRoute(req: ServerRequest, pathname: string, 
       statusCode: 200,
       body: {
         success: true,
-        results: results.map(r => ({
+        results: results.map((r: any) => ({
           ...r,
           userName: r.user?.fullName || 'Unknown',
           parishName: (r.user as any)?.parish?.name || '—',
@@ -325,7 +325,7 @@ export async function handleAdminApiRoute(req: ServerRequest, pathname: string, 
       statusCode: 200,
       body: {
         success: true,
-        users: users.map(u => ({
+        users: users.map((u: any) => ({
           id: u.id,
           fullName: u.fullName,
           phoneE164: u.phoneE164,

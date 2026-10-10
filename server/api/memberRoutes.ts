@@ -144,7 +144,7 @@ export async function handleMemberApiRoute(req: ServerRequest, pathname: string,
       orderBy: [schema.examQuestions.position],
     });
 
-    const questions = examQuestions.map(eq => eq.question);
+    const questions = examQuestions.map((item: any) => item.question);
 
     // Load saved answers (only the user's saved data, no scores revealed)
     const savedAnswers = await db.query.examAnswers.findMany({
@@ -161,7 +161,7 @@ export async function handleMemberApiRoute(req: ServerRequest, pathname: string,
         attempt: {
           ...attempt,
           exam: { title: exam?.title },
-          savedAnswers: savedAnswers.map(a => ({
+          savedAnswers: savedAnswers.map((a: any) => ({
             questionId: a.questionId,
             selectedOptionId: a.selectedOptionId,
             writtenResponse: a.writtenResponse,
@@ -257,7 +257,7 @@ export async function handleMemberApiRoute(req: ServerRequest, pathname: string,
 
     const now = new Date();
 
-    await db.transaction(async (tx) => {
+    await db.transaction(async (tx: any) => {
       // Submit attempt
       await tx.update(schema.examAttempts)
         .set({ status: 'submitted', submittedAt: now })
@@ -355,7 +355,7 @@ export async function handleMemberApiRoute(req: ServerRequest, pathname: string,
       statusCode: 200,
       body: {
         success: true,
-        results: results.map(r => ({
+        results: results.map((r: any) => ({
           ...r,
           examTitle: r.exam?.title,
           totalScore: Number(r.totalScore),

@@ -114,5 +114,6 @@ export interface ExamResult {
   isPassed: boolean;
   gradeStatus: 'auto_graded' | 'pending_manual_grading' | 'fully_graded';
   releasedAt?: string;
+  submittedAt?: string;
   createdAt: string;
 }

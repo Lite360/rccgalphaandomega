@@ -238,12 +238,11 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import { api } from '@/services/api';
-import type { Question, ExamAttempt } from '@/types';
+import type { Question } from '@/types';
 
 const route = useRoute();
-const router = useRouter();
 const examId = route.params.id as string;
 
 // State

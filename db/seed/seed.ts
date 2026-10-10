@@ -65,10 +65,10 @@ async function seed() {
       status: 'active',
     }).returning({ id: schema.admins.id });
     adminId = newAdmin.id;
-    console.log(`  + Created admin account: ${adminUsername} (Password: ${adminPassword})`);
+    console.log(`  + Created admin account: ${adminUsername} (ID: ${adminId}, Password: ${adminPassword})`);
   } else {
     adminId = existingAdmin.id;
-    console.log(`  ~ Admin exists: ${adminUsername}`);
+    console.log(`  ~ Admin exists: ${adminUsername} (ID: ${adminId})`);
   }
 
   // 3. Seed Sample Questions

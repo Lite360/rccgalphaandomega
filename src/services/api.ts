@@ -1,4 +1,4 @@
-// Frontend API Client
+import type { Parish } from '../types';
 
 export interface ApiResponse<T = any> {
   success: boolean;
@@ -55,7 +55,7 @@ class ApiClient {
 
   // Auth APIs
   async getParishes() {
-    return this.request<{ parishes: Array<{ id: string; name: string; slug: string }> }>('/api/parishes');
+    return this.request<{ parishes: Parish[] }>('/api/parishes');
   }
 
   async register(params: { fullName: string; parishId: string; phoneE164: string }) {

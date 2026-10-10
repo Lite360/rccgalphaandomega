@@ -1,13 +1,12 @@
 import { handleAdminApiRoute } from './adminRoutes';
 import { handleMemberApiRoute } from './memberRoutes';
 import { db, schema } from '../../db';
-import { eq, and, desc, sql } from 'drizzle-orm';
+import { eq, and, desc } from 'drizzle-orm';
 import {
   registerSchema,
   loginSchema,
   verifyOtpSchema,
   adminLoginSchema,
-  createParishSchema,
 } from '../validators';
 import {
   createSession,
@@ -79,7 +78,7 @@ export async function handleApiRoute(req: ServerRequest): Promise<ServerResponse
         };
       }
 
-      const { fullName, parishId, phoneE164 } = parsed.data;
+      const { parishId, phoneE164 } = parsed.data;
 
       // Check if user already exists
       const existing = await db.query.users.findFirst({
